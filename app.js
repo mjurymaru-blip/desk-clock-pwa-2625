@@ -352,6 +352,19 @@ function init() {
 
     // 自動全画面セットアップ
     setupAutoFullscreen();
+
+    // 焼き付き防止開始
+    startBurnInProtection();
+}
+
+// 焼き付き防止 (Pixel Shift)
+// 1分ごとに画面全体をわずかにずらす
+function startBurnInProtection() {
+    setInterval(() => {
+        const x = Math.floor(Math.random() * 10) - 5; // -5px ~ 5px
+        const y = Math.floor(Math.random() * 10) - 5;
+        document.body.style.transform = `translate(${x}px, ${y}px)`;
+    }, 60000);
 }
 
 // Service Worker登録

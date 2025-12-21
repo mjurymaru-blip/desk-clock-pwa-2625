@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1a1a2e">
+    <meta name="description" content="シンプルな置き時計アプリ - 4種類の表示パターン">
+    <meta property="og:title" content="置き時計">
+    <meta property="og:description" content="シンプルで実用的なPWA置き時計">
+    <meta property="og:type" content="website">
+    <meta name="robots" content="noindex, nofollow">
+    <title>置き時計</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+JP:wght@300;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="clock-container" id="clockContainer">
+        <!-- パターン1: シンプル -->
+        <div class="pattern pattern-simple active" data-pattern="simple">
+            <div class="time" id="time-simple">00:00:00</div>
+        </div>
+
+        <!-- パターン2: 日付付き -->
+        <div class="pattern pattern-with-date" data-pattern="with-date">
+            <div class="time" id="time-date">00:00:00</div>
+            <div class="date" id="date">2024年12月20日（金）</div>
+        </div>
+
+        <!-- パターン3: アナログ風 -->
+        <div class="pattern pattern-analog" data-pattern="analog">
+            <div class="analog-clock">
+                <div class="clock-face">
+                    <!-- 時間表記 -->
+                    <span class="clock-number n1">1</span>
+                    <span class="clock-number n2">2</span>
+                    <span class="clock-number n3">3</span>
+                    <span class="clock-number n4">4</span>
+                    <span class="clock-number n5">5</span>
+                    <span class="clock-number n6">6</span>
+                    <span class="clock-number n7">7</span>
+                    <span class="clock-number n8">8</span>
+                    <span class="clock-number n9">9</span>
+                    <span class="clock-number n10">10</span>
+                    <span class="clock-number n11">11</span>
+                    <span class="clock-number n12">12</span>
+                    <!-- 針 -->
+                    <div class="hand hour-hand" id="hour-hand"></div>
+                    <div class="hand minute-hand" id="minute-hand"></div>
+                    <div class="hand second-hand" id="second-hand"></div>
+                    <div class="center-dot"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- パターン4: ミニマル -->
+        <div class="pattern pattern-minimal" data-pattern="minimal">
+            <div class="time-minimal" id="time-minimal">00:00</div>
+        </div>
+    </div>
+
+    <!-- パターン切り替えインジケーター -->
+    <div class="pattern-indicator">
+        <span class="dot active" data-index="0"></span>
+        <span class="dot" data-index="1"></span>
+        <span class="dot" data-index="2"></span>
+        <span class="dot" data-index="3"></span>
+    </div>
+
+    <!-- ヒント表示 -->
+    <div class="hint" id="hint">
+        左右スワイプで切り替え | ダブルタップで全画面
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

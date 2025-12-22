@@ -11,6 +11,10 @@ const clockContainer = document.getElementById('clockContainer');
 const patternElements = document.querySelectorAll('.pattern');
 const dots = document.querySelectorAll('.dot');
 const hint = document.getElementById('hint');
+const settingsBtn = document.getElementById('settingsBtn');
+const settingsModal = document.getElementById('settingsModal');
+const closeSettingsBtn = document.getElementById('closeSettingsBtn');
+const fontSelect = document.getElementById('fontSelect');
 
 // ========================================
 // 時刻更新
@@ -355,6 +359,43 @@ function init() {
 
     // 焼き付き防止開始
     startBurnInProtection();
+
+    // 設定関連の初期化
+    initSettings();
+}
+
+// ========================================
+// 設定機能
+// ========================================
+function initSettings() {
+    // 保存されたフォントを復元
+    const savedFont = localStorage.getItem('selectedFont');
+    if (savedFont) {
+        document.documentElement.style.setProperty('--main-font', `'${savedFont}', sans-serif`);
+        fontSelect.value = savedFont;
+    }
+
+    // モーダル開閉
+    settingsBtn.addEventListener('click', () => {
+        settingsModal.classList.add('active');
+    });
+
+    closeSettingsBtn.addEventListener('click', () => {
+        settingsModal.classList.remove('active');
+    });
+
+    settingsModal.addEventListener('click', (e) => {
+        if (e.target === settingsModal) {
+            settingsModal.classList.remove('active');
+        }
+    });
+
+    // フォント切り替え
+    fontSelect.addEventListener('change', (e) => {
+        const font = e.target.value;
+        document.documentElement.style.setProperty('--main-font', `'${font}', sans-serif`);
+        localStorage.setItem('selectedFont', font);
+    });
 }
 
 // 焼き付き防止 (Pixel Shift)

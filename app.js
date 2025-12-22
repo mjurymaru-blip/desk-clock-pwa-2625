@@ -3,8 +3,9 @@
    ======================================== */
 
 // パターン管理
-const patterns = ['simple', 'with-date', 'analog', 'minimal'];
+const patterns = ['simple', 'with-date', 'analog', 'minimal', 'hourglass'];
 let currentPatternIndex = 0;
+let lastRippleMinute = -1;
 
 // DOM要素
 const clockContainer = document.getElementById('clockContainer');
@@ -21,6 +22,9 @@ const fontSelect = document.getElementById('fontSelect');
 // ========================================
 function updateClock() {
     const now = new Date();
+    const hour = now.getHours();
+    const minute = now.getMinutes();
+    const second = now.getSeconds();
 
     // 時刻文字列（秒あり）
     const timeWithSeconds = now.toLocaleTimeString('ja-JP', {
@@ -61,6 +65,18 @@ function updateClock() {
     // パターン4: ミニマル
     const timeMinimal = document.getElementById('time-minimal');
     if (timeMinimal) timeMinimal.textContent = timeWithoutSeconds;
+
+    // パターン5: 砂時計
+    updateHourglass(now);
+
+    // Rippleエフェクトのチェック (15分おき: 00, 15, 30, 45)
+    if (minute % 15 === 0 && second === 0 && lastRippleMinute !== minute) {
+        triggerRipple();
+        lastRippleMinute = minute;
+    }
+
+    // 動的テーマの更新 (24時間周期の連続色相)
+    updateDynamicTheme(hour, minute, second);
 }
 
 // アナログ時計の針を更新
@@ -406,6 +422,65 @@ function startBurnInProtection() {
         const y = Math.floor(Math.random() * 10) - 5;
         document.body.style.transform = `translate(${x}px, ${y}px)`;
     }, 60000);
+}
+
+// ========================================
+// 美学演出ロジック
+// ========================================
+
+/**
+ * 動的な色相計算 (Continuous Hue Mapping)
+ * 24時間かけてゆっくり色相を循環させる
+ */
+function updateDynamicTheme(h, m, s) {
+    // 時刻を 0〜1 に正規化
+    const t = (h * 3600 + m * 60 + s) / 86400;
+    // ユーザー提案の数式: hue = 220 - 180 * cos(t * 2π)
+    const hue = 220 - 180 * Math.cos(t * Math.PI * 2);
+    document.documentElement.style.setProperty('--dynamic-hue', Math.floor(hue));
+}
+
+/**
+ * 波紋 (Ripple) エフェクトを生成
+ */
+function triggerRipple() {
+    const container = document.getElementById('rippleContainer');
+    if (!container) return;
+
+    const ripple = document.createElement('div');
+    ripple.className = 'ripple-ring';
+    container.appendChild(ripple);
+
+    // アニメーション終了後に削除 (2.5s)
+    setTimeout(() => {
+        ripple.remove();
+    }, 3000);
+}
+
+/**
+ * 砂時計 (Hourglass) のアニメーション更新
+ * 背景充填型: 1時間周期で下から光が満ちていく
+ */
+function updateHourglass(now) {
+    const minutes = now.getMinutes();
+    const seconds = now.getSeconds();
+    const totalSecondsInHour = 3600;
+    const currentSeconds = (minutes * 60) + seconds;
+    const progress = currentSeconds / totalSecondsInHour;
+
+    const hourFill = document.getElementById('hourFill');
+    const timeHourglass = document.getElementById('time-hourglass');
+
+    // 背景の充填率を更新 (0% 〜 100%)
+    if (hourFill) {
+        hourFill.style.height = `${progress * 100}%`;
+    }
+
+    if (timeHourglass) {
+        timeHourglass.textContent = now.toLocaleTimeString('ja-JP', {
+            hour: '2-digit', minute: '2-digit', hour12: false
+        });
+    }
 }
 
 // Service Worker登録

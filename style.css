@@ -11,9 +11,12 @@
     --accent-color: #00d9ff;
     --accent-glow: rgba(0, 217, 255, 0.4);
     --hint-color: #444;
-    --dot-color: #333;
     --dot-active: #00d9ff;
     --main-font: 'Orbitron', sans-serif;
+    /* 動的色制御用 */
+    --dynamic-hue: 220;
+    --accent-color: hsl(var(--dynamic-hue), 100%, 50%);
+    --accent-glow: hsla(var(--dynamic-hue), 100%, 50%, 0.4);
 }
 
 .light-theme {
@@ -45,7 +48,9 @@ body {
     padding: 0;
     width: 100%;
     height: 100vh;
-    background: radial-gradient(circle at center, #252540, #0a0a15);
+    background: radial-gradient(circle at center,
+            hsl(var(--dynamic-hue), 30%, 15%) 0%,
+            hsl(var(--dynamic-hue), 40%, 5%) 100%);
     background-size: cover;
     color: var(--text-color);
     font-family: var(--main-font);
@@ -99,6 +104,7 @@ body {
     color: var(--accent-color);
     text-shadow: 0 0 60px var(--accent-glow),
         0 0 120px var(--accent-glow);
+    animation: breathe 5s infinite ease-in-out;
 }
 
 /* ========================================
@@ -452,6 +458,90 @@ body:fullscreen .pattern-indicator:hover {
 :fullscreen .hint,
 :-webkit-full-screen .hint {
     display: none;
+}
+
+/* ========================================
+   生命感演出
+   ======================================== */
+
+@keyframes breathe {
+
+    0%,
+    100% {
+        opacity: 0.8;
+        filter: brightness(1);
+    }
+
+    50% {
+        opacity: 1;
+        filter: brightness(1.3) drop-shadow(0 0 15px var(--accent-glow));
+    }
+}
+
+.ripple-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ripple-ring {
+    position: absolute;
+    border: 2px solid var(--accent-color);
+    border-radius: 50%;
+    animation: ripple 2.5s ease-out forwards;
+    opacity: 0;
+}
+
+@keyframes ripple {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 0.8;
+        border-width: 4px;
+    }
+
+    100% {
+        width: 250vmax;
+        height: 250vmax;
+        opacity: 0;
+        border-width: 1px;
+    }
+}
+
+.pattern-hourglass {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hour-fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0%;
+    /* JS $(progress * 100)% */
+    background: linear-gradient(to top,
+            hsla(var(--dynamic-hue), 80%, 70%, 0.35),
+            hsla(var(--dynamic-hue), 80%, 70%, 0.05));
+    filter: blur(8px);
+    transition: height 1s linear;
+    z-index: 1;
+}
+
+.pattern-hourglass .time-minimal {
+    position: relative;
+    z-index: 2;
+    animation: breathe 5s infinite ease-in-out;
 }
 
 /* 設定ボタン */

@@ -10,10 +10,16 @@ TrueNAS ScaleやGitHub Pagesでの利用を想定しています。
 > - Please keep the URL private if deployed publicly.
 
 ## Features
-- **4 Display Patterns**: Simple, Date, Analog, Minimal
-  - 日付付き（時刻 + 日付・曜日）
-  - アナログ風（円形のアナログ時計）
-  - ミニマル（時:分のみ）
+- **5 Display Patterns**: Simple, Date, Analog, Minimal, Hourglass (Background Fill)
+  - **日付付き**: 時刻 + 日付・曜日
+  - **アナログ風**: 円形のアナログ時計
+  - **ミニマル**: 時:分のみの極小表示
+  - **砂時計**: 背景が光で満たされる抽象的な時間表現（1時間周期）
+
+- 🍃 **「静かな時間」の演出**:
+  - **Dynamic Day/Night**: 24時間かけて背景色が連続的に移ろいます
+  - **Breathe**: 文字の発光がゆっくりと呼吸するように明滅します
+  - **Ripple**: 15分ごとに画面に静かな波紋が広がります
 
 - 🌙 **ダーク/ライトテーマ切り替え**
 - 📺 **全画面モード対応**

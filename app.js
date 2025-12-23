@@ -69,6 +69,14 @@ function updateClock() {
     // パターン5: 砂時計
     updateHourglass(now);
 
+    // 正時通知 (00分00秒)
+    if (minute === 0 && second === 0) {
+        document.body.classList.add('flicker');
+        setTimeout(() => {
+            document.body.classList.remove('flicker');
+        }, 150); // flickerアニメーション時間に合わせる
+    }
+
     // 深夜モード判定 (0:00 - 5:00)
     if (hour >= 0 && hour < 5) {
         document.body.classList.add('night-mode');
@@ -76,8 +84,10 @@ function updateClock() {
         document.body.classList.remove('night-mode');
     }
 
-    // Rippleエフェクトのチェック (15分おき: 00, 15, 30, 45)
-    if (minute % 15 === 0 && second === 0 && lastRippleMinute !== minute) {
+    // Rippleエフェクトのチェック
+    // 砂時計モード（index: 4）の場合は1時間おき、それ以外は15分おき
+    const rippleInterval = (patterns[currentPatternIndex] === 'hourglass') ? 60 : 15;
+    if (minute % rippleInterval === 0 && second === 0 && lastRippleMinute !== minute) {
         triggerRipple();
         lastRippleMinute = minute;
     }
@@ -494,6 +504,13 @@ function updateHourglass(now) {
             hourFill.classList.add('approaching');
         } else {
             hourFill.classList.remove('approaching');
+        }
+
+        // 最後の一分 (59分) なら「気配」演出
+        if (now.getMinutes() === 59) {
+            hourFill.classList.add('final-flare');
+        } else {
+            hourFill.classList.remove('final-flare');
         }
     }
 

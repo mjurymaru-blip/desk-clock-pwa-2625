@@ -1,7 +1,24 @@
 # Desk Clock PWA
+*時間の解像度を下げる、アンビエントな伴走者*
 
 シンプルで実用的な置き時計PWAアプリです。
-TrueNAS ScaleやGitHub Pagesでの利用を想定しています。
+「時間を測る」のではなく「時間を眺める」ための、思想と余白を持ったアンビエント時計へと進化しました。
+
+### 🎨 Variations & Ambience
+このアプリは、時間の捉え方を変える複数の表情（パターン）を持っています。
+
+| 1. Digital (Simple) | 2. Analog Style | 3. Hourglass (Demo) |
+| :---: | :---: | :---: |
+| ![Digital](./docs/desk_clock_v1/images/digital_preview.png) | ![Analog](./docs/desk_clock_v1/images/analog_preview.png) | ![Hourglass Demo](./docs/desk_clock_v1/images/hourglass_demo.svg) |
+| 普遍的で明快な数字 | 情緒的な針の動き | 抽象的な時の充填 |
+
+#### ⏳ The Story of an Hour (Hourglass Mode)
+砂時計モードでは、一時間の移ろいが光の物語として描かれます。
+
+| 1._Initialization | 2.Accumulation | 3.Flare__59min  | 4.Silence_00min  |
+| :---: | :---: | :---: | :---: |
+| ![Story 1](./docs/desk_clock_v1/images/story_1_reset.png) | ![Story 2](./docs/desk_clock_v1/images/story_2_approaching.png) | ![Story 3](./docs/desk_clock_v1/images/story_3_flare.png) | ![Story 4](./docs/desk_clock_v1/images/story_4_ripple.png) |
+| 新しい時間の予感 | 着実に満ちる光 | 溢れ出す一分の気配 | 暗転と波紋の静寂 |
 
 > [!IMPORTANT]
 > **Privacy Note**
@@ -40,6 +57,18 @@ TrueNAS ScaleやGitHub Pagesでの利用を想定しています。
 | ← → キー | パターン切り替え |
 | F キー | 全画面モード切り替え |
 | T キー | テーマ切り替え |
+
+## ローカルで実行
+
+```bash
+# Python 3の場合
+python3 -m http.server 8080
+
+# または Node.js の場合
+npx serve .
+```
+
+ブラウザで `http://localhost:8080` にアクセス
 
 ## Androidにインストール
 

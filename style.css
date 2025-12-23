@@ -500,6 +500,30 @@ body:fullscreen .pattern-indicator:hover {
     animation: breathe-night 8s infinite ease-in-out !important;
 }
 
+@keyframes flicker {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.2;
+        filter: brightness(0.2);
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.flicker {
+    animation: flicker 0.15s ease-out !important;
+}
+
+.flicker * {
+    animation: none !important;
+    /* ブレスを一時停止 */
+}
+
 .ripple-container {
     position: fixed;
     top: 0;
@@ -575,6 +599,13 @@ body:fullscreen .pattern-indicator:hover {
     background: linear-gradient(to top,
             hsla(calc(var(--dynamic-hue) + 20), 100%, 75%, 0.45),
             hsla(calc(var(--dynamic-hue) + 20), 100%, 75%, 0.05));
+}
+
+.hour-fill.final-flare {
+    background: linear-gradient(to top,
+            hsla(calc(var(--dynamic-hue) + 30), 100%, 85%, 0.6),
+            hsla(calc(var(--dynamic-hue) + 30), 100%, 85%, 0.1));
+    filter: blur(12px) brightness(1.2);
 }
 
 .pattern-hourglass .time-minimal {

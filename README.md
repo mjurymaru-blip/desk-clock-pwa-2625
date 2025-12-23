@@ -41,18 +41,6 @@ TrueNAS ScaleやGitHub Pagesでの利用を想定しています。
 | F キー | 全画面モード切り替え |
 | T キー | テーマ切り替え |
 
-## ローカルで実行
-
-```bash
-# Python 3の場合
-python3 -m http.server 8080
-
-# または Node.js の場合
-npx serve .
-```
-
-ブラウザで `http://localhost:8080` にアクセス
-
 ## Androidにインストール
 
 1. Chromeで上記URLにアクセス

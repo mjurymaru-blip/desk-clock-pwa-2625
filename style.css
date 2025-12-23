@@ -85,12 +85,14 @@ body {
     width: 100%;
     height: 100%;
     opacity: 0;
-    transition: opacity 0.5s ease;
+    transform: scale(0.98);
+    transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .pattern.active {
     display: flex;
     opacity: 1;
+    transform: scale(1);
 }
 
 /* ========================================
@@ -478,6 +480,26 @@ body:fullscreen .pattern-indicator:hover {
     }
 }
 
+@keyframes breathe-night {
+
+    0%,
+    100% {
+        opacity: 0.85;
+        filter: brightness(0.9);
+    }
+
+    50% {
+        opacity: 0.9;
+        filter: brightness(1.0) drop-shadow(0 0 5px var(--accent-glow));
+    }
+}
+
+.night-mode .time,
+.night-mode .time-minimal,
+.night-mode .hour-glass {
+    animation: breathe-night 8s infinite ease-in-out !important;
+}
+
 .ripple-container {
     position: fixed;
     top: 0;
@@ -523,6 +545,17 @@ body:fullscreen .pattern-indicator:hover {
     align-items: center;
 }
 
+.hourglass-anchor {
+    position: absolute;
+    top: 5vh;
+    left: 10%;
+    width: 80%;
+    height: 1px;
+    background: hsla(var(--dynamic-hue), 80%, 70%, 0.15);
+    box-shadow: 0 0 10px hsla(var(--dynamic-hue), 80%, 70%, 0.1);
+    z-index: 1;
+}
+
 .hour-fill {
     position: absolute;
     bottom: 0;
@@ -534,14 +567,27 @@ body:fullscreen .pattern-indicator:hover {
             hsla(var(--dynamic-hue), 80%, 70%, 0.35),
             hsla(var(--dynamic-hue), 80%, 70%, 0.05));
     filter: blur(8px);
-    transition: height 1s linear;
+    transition: height 1s linear, background 2s ease;
     z-index: 1;
+}
+
+.hour-fill.approaching {
+    background: linear-gradient(to top,
+            hsla(calc(var(--dynamic-hue) + 20), 100%, 75%, 0.45),
+            hsla(calc(var(--dynamic-hue) + 20), 100%, 75%, 0.05));
 }
 
 .pattern-hourglass .time-minimal {
     position: relative;
     z-index: 2;
     animation: breathe 5s infinite ease-in-out;
+    transition: opacity 0.5s ease;
+}
+
+.pattern-hourglass .time-minimal.hidden {
+    opacity: 0 !important;
+    animation: none !important;
+    pointer-events: none;
 }
 
 /* 設定ボタン */

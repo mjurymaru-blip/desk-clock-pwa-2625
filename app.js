@@ -69,6 +69,13 @@ function updateClock() {
     // パターン5: 砂時計
     updateHourglass(now);
 
+    // 深夜モード判定 (0:00 - 5:00)
+    if (hour >= 0 && hour < 5) {
+        document.body.classList.add('night-mode');
+    } else {
+        document.body.classList.remove('night-mode');
+    }
+
     // Rippleエフェクトのチェック (15分おき: 00, 15, 30, 45)
     if (minute % 15 === 0 && second === 0 && lastRippleMinute !== minute) {
         triggerRipple();
@@ -433,6 +440,13 @@ function startBurnInProtection() {
  * 24時間かけてゆっくり色相を循環させる
  */
 function updateDynamicTheme(h, m, s) {
+    // 深夜帯 (0:00 - 5:00) は変化を極めて緩やかにするか停止する
+    if (h >= 0 && h < 5) {
+        // 色相を深夜の青〜深緑あたりで固定気味にする (例: Hue 240付近)
+        document.documentElement.style.setProperty('--dynamic-hue', 240);
+        return;
+    }
+
     // 時刻を 0〜1 に正規化
     const t = (h * 3600 + m * 60 + s) / 86400;
     // ユーザー提案の数式: hue = 220 - 180 * cos(t * 2π)
@@ -474,6 +488,13 @@ function updateHourglass(now) {
     // 背景の充填率を更新 (0% 〜 100%)
     if (hourFill) {
         hourFill.style.height = `${progress * 100}%`;
+
+        // 80%を超えたら色相をわずかに変えるクラスを付与
+        if (progress >= 0.8) {
+            hourFill.classList.add('approaching');
+        } else {
+            hourFill.classList.remove('approaching');
+        }
     }
 
     if (timeHourglass) {
@@ -481,6 +502,36 @@ function updateHourglass(now) {
             hour: '2-digit', minute: '2-digit', hour12: false
         });
     }
+}
+
+// 砂時計モードの没入感向上のための制御
+let hourglassTimeout;
+const timeHourglass = document.getElementById('time-hourglass');
+const hourglassPattern = document.querySelector('.pattern-hourglass');
+
+if (hourglassPattern && timeHourglass) {
+    // 初期状態は非表示
+    timeHourglass.classList.add('hidden');
+
+    hourglassPattern.addEventListener('click', (e) => {
+        // 現在のパターンが砂時計の場合のみ動作
+        if (patterns[currentPatternIndex] !== 'hourglass') return;
+
+        // 数字を表示
+        timeHourglass.classList.remove('hidden');
+
+        // 以前のタイマーをクリア
+        if (hourglassTimeout) clearTimeout(hourglassTimeout);
+
+        // 2秒後に再度隠す
+        hourglassTimeout = setTimeout(() => {
+            timeHourglass.classList.add('hidden');
+        }, 2000);
+
+        // イベントの伝搬を止める（背景のテーマ切り替えを阻害しないようにしたい場合は調整が必要だが、
+        // ユーザー提案に従い「没入モード」を優先する）
+        e.stopPropagation();
+    });
 }
 
 // Service Worker登録
